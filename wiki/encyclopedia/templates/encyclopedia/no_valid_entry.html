@@ -1,0 +1,14 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{ entry }} - Page Not Found!
+{% endblock %}
+{{ form }}
+{% block body %}
+<br>
+<br>
+    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.etsystatic.com%2F24991978%2Fr%2Fil%2F384947%2F2509168940%2Fil_1588xN.2509168940_gxtn.jpg&f=1&nofb=1&ipt=15c18e35b6ec59298bb8c4c809b02f4ec722a19065fd47fb1fee3a8d878071bf&ipo=images" alt="D'oh!" width="135" height="100">
+        There is currently no entry for <strong>"{{ term }}{{ entry }}"</strong>
+    </ul>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ converted_entry|safe }}</h1>
+    
+    <form method="POST">
+    <button type="submit" formaction="{% url 'edit' %}" class="btn btn-primary btn-sm active" 
+        name="edit_entry" input type="hidden" id="custId" 
+        name="title" value="{{ title }}">Edit</button>
+        {% csrf_token %}
+    </form>
+    
+{% endblock %}
+
+
+</form>

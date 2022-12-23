@@ -1,0 +1,18 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %} 
+Suggested Pages
+{% endblock %}
+{%  block body %}
+<br>
+<h1>No entry found for "{{ term }}"</h1>
+<br>
+<img src="http://img1.wikia.nocookie.net/__cb20130329171400/simpsons/pt/images/6/61/Homer_computador.png" alt="D'oh!" width="145" height="110">
+Perhaps you were looking for...
+{% for a in all %} 
+{% if term in a %}
+<a href="/wiki/{{ a }}">{{ a }}?</a>
+{% endif %}
+{% endfor %} 
+
+{% endblock %}

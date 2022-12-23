@@ -1,0 +1,33 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Create New Page
+{% endblock %}
+
+{% block body %}
+<br>
+&nbsp;<img src="https://vignette.wikia.nocookie.net/simpsonstappedout/images/d/da/Pin_Pal_Homer_Unlock.png/revision/latest?cb=20170511030356" alt="D'oh!" width="180" height="190">
+
+&nbsp;&nbsp; A page for <strong><a href="/wiki/{{ exists }}">{{ exists }} </a></strong>already exists!
+
+</ul>
+<br>
+<br>
+<hr class="hr" />
+<br>
+    <h2>Create New Page</h2>
+    </ul>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ entry_form }}
+        {{ edit_form }}
+        <br>
+        <button type="Save" class="btn btn-primary btn-sm active">Submit Entry</button>
+    </form>
+
+
+
+{% endblock %}
+
+<!--<h2>A page for {{ exists }} already exists!</h2>
+<img src="https://i.etsystatic.com/24991978/r/il/43c345/2509168432/il_794xN.2509168432_dxt5.jpg" alt="D'oh!" width="135" height="100">-->
