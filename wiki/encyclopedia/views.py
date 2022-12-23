@@ -11,9 +11,11 @@ from django.core.exceptions import ValidationError
 markdown = Markdown()
 
 class SearchForm(forms.Form):
+    """ Django Form for searches of all markdown file entries """
     search = forms.CharField(label="", widget=forms.TextInput(attrs={'placeholder':'Search Encyclopedia'}))
 
 class NewEntryForm(forms.Form):
+    """ Django Form for user to enter a new markdown entry """
     title = forms.CharField(label="Title", 
         widget=forms.TextInput(attrs={'placeholder':'Title for page reference', 
             'style': 'width: 300px;', 'class': 'form-control'}))
@@ -22,6 +24,7 @@ class NewEntryForm(forms.Form):
             'style': 'width: 800px;', 'class': 'form-control'}))
 
 def new_entry(request):
+    """ Renders new_entry.html page with form for new entry (title and content). Directs user to new entry page on form submission."""
     if request.method == 'POST':
         form = NewEntryForm(request.POST)
         if form.is_valid():
@@ -44,6 +47,7 @@ def new_entry(request):
         return render(request, "encyclopedia/new_entry.html", context)
 
 def error(request):
+    """ Informs user if new entry title is already in use."""
     if request.method == 'POST':
         form = NewEntryForm(request.POST)
         if form.is_valid():
@@ -55,10 +59,9 @@ def error(request):
     return render(request, "encyclopedia/error.html")
 
 def index(request):
+    """ Renders Index page with all markdown entries """
     if request.method == "POST":
-        #take in data and save it
         form = SearchForm(request.POST)
-        #full list of names of entries
         all_entries = util.list_entries()
         
         if form.is_valid():
@@ -75,8 +78,6 @@ def index(request):
                         return render(request, "encyclopedia/suggestion.html", context)
             
                     if search_term.lower() == entry.lower(): 
-                        #named_redirect = reverse()
-                        #return HttpResponseRedirect('suggestion')
                         named_redirect = reverse('entry', args=[entry])
                         return HttpResponseRedirect(named_redirect)
 
@@ -92,10 +93,10 @@ def index(request):
         return render(request, "encyclopedia/index.html", context)
 
 def search(request):
+    """ Directs user to desired page through SearchForm """
+
     if request.method == "POST":
-        #take in data and save it
         form = SearchForm(request.POST)
-        #full list of names of entries
         all_entries = util.list_entries()
         
         if form.is_valid():
@@ -134,6 +135,7 @@ def search(request):
         return render(request, "encyclopedia/index.html", context)
 
 def entry(request, entry):
+    """ Allows user to create a new entry """
 
     if request.method == "POST":
         if SearchForm(request.POST):
@@ -152,6 +154,7 @@ def entry(request, entry):
         return render(request, "encyclopedia/no_valid_entry.html", context)
 
 def edit(request):
+    """ Allows user to edit an entry"""
     entry_title = request.POST['edit_entry']
     entry_content = util.get_entry(entry_title)
     edit_form = NewEntryForm({'title': entry_title, 'content': entry_content})
@@ -159,6 +162,7 @@ def edit(request):
     return render(request, "encyclopedia/edit.html", context)
 
 def save(request):
+    """ Allows user to save new entry. Directs to new entry page """
     if request.method == 'POST':
         form = NewEntryForm(request.POST)
         if form.is_valid():
@@ -170,26 +174,14 @@ def save(request):
             return render(request, 'encyclopedia/entry.html', context)
 
 def thanks(request):
+    """ Redundant """
     return render(request, "encyclopedia/thanks.html")
 
 def rando(request):
+    """ Takes user to a random entry """
     entries_list = util.list_entries()
     selection = choice(entries_list)
     random_content = util.get_entry(selection)
     converted_entry = markdown.convert(random_content)
     context = {"converted_entry": converted_entry, "title": selection, "form": SearchForm()}
     return render(request,"encyclopedia/entry.html", context)
-
-"""def error(request):
-    if request.method == 'POST':
-        form = NewEntryForm(request.POST)
-        if form.is_valid():
-            exists = form.cleaned_data['title']
-            title_already_exists = request.POST['title']   
-            entry_content = util.get_entry(exists)           
-            edit_form = NewEntryForm({'title': title_already_exists, 'content': entry_content})
-            
-            context = {"edit_form": edit_form, "exists": exists}
-            return render(request, "encyclopedia/error.html", context)
-
-    return render(request, "encyclopedia/error.html")"""
